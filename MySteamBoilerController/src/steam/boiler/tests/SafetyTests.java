@@ -354,46 +354,6 @@ public class SafetyTests {
   }
 
   /**
-   * Check that the system recognizes when the steam sensor is stuck at 100.
-   */
-  @Test
-  public void steam_stuck_oneHundred(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break steam sensor to be stuck in the middle of its range
-      model.setSteamSensor(new SteamSensorModels.StuckOneHundred(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_degraded));
-  }
-
-  /**
-   * Check that the system recognizes when the steam sensor is stuck at -1.
-   */
-  @Test
-  public void steam_stuck_negativeOne(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break steam sensor to be stuck at -1
-      model.setSteamSensor(new SteamSensorModels.StuckNegativeOne(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_degraded));
-  }
-
-  /**
    * Check that the system recognizes when the steam sensor is stuck at 0.
    */
   @Test
@@ -433,45 +393,6 @@ public class SafetyTests {
       clockUntil(30, controller, model, atleast(MODE_degraded));
   }
 
-  /**
-   * Check that the system recognizes when the steam sensor is offset by -10.
-   */
-  @Test
-  public void steam_offset_negativeTen(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break steam sensor to be offset by -10
-      model.setSteamSensor(new SteamSensorModels.OffsetNegativeTen(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_degraded));
-  }
-
-  /**
-   * Check that the system recognizes when the steam sensor is offset by -100.
-   */
-  @Test
-  public void steam_offset_negativeOneHundred(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break steam sensor to be offset by -100
-      model.setSteamSensor(new SteamSensorModels.OffsetNegativeOneHundred(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_degraded));
-  }
 
   /**
    * Check that the system recognizes when the steam sensor is offset by 10.
@@ -488,26 +409,6 @@ public class SafetyTests {
 
       //Break steam sensor to be offset by 10
       model.setSteamSensor(new SteamSensorModels.OffsetTen(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_degraded));
-  }
-
-  /**
-   * Check that the system recognizes when the steam sensor is offset by 100.
-   */
-  @Test
-  public void steam_offset_oneHundred(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break steam sensor to be offset by 100
-      model.setSteamSensor(new SteamSensorModels.OffsetOneHundred(model));
 
       //Continue clocking the system. Should keep working.
       clockUntil(30, controller, model, atleast(MODE_degraded));
@@ -547,10 +448,12 @@ public class SafetyTests {
       //Expect the system to recognize issue quickly
       clockUntil(10, controller, model, atleast(MODE_emergencystop));
   }
-  /*-----------------------------------------------------------------------------------------------------------------------------------*/
 
 
   /*-------------------------------------------------------Water Sensor Tests----------------------------------------------------------*/
+  
+  
+  
   /**
    * Check that the system recognizes when the level sensor goes below zero.
    */
@@ -612,26 +515,6 @@ public class SafetyTests {
   }
 
   /**
-   * Check that the system recognizes when the level sensor is stuck at -1.
-   */
-  @Test
-  public void water_stuck_negativeOne(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break the steam sensor to be out of bounds
-      model.setLevelSensor(new LevelSensorModels.StuckNegativeOne(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_rescue));
-  }
-
-  /**
    * Check that the system recognizes when the level sensor is stuck at 0.
    */
   @Test
@@ -646,66 +529,6 @@ public class SafetyTests {
 
       //Break the steam sensor to be out of bounds
       model.setLevelSensor(new LevelSensorModels.StuckZero(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_rescue));
-  }
-
-  /**
-   * Check that the system recognizes when the level sensor is stuck at 300.
-   */
-  @Test
-  public void water_stuck_threeHundred(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break the steam sensor to be out of bounds
-      model.setLevelSensor(new LevelSensorModels.Stuck(model, 300.0));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_rescue));
-  }
-
-  /**
-   * Check that the system recognizes when the level sensor is offset by -10.
-   */
-  @Test
-  public void water_offset_negativeTen(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break the steam sensor to be out of bounds
-      model.setLevelSensor(new LevelSensorModels.OffsetNegativeTen(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_rescue));
-  }
-
-  /**
-   * Check that the system recognizes when the level sensor is offset by -100.
-   */
-  @Test
-  public void water_offset_negativeOneHundred(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break the steam sensor to be out of bounds
-      model.setLevelSensor(new LevelSensorModels.OffsetNegativeOneHundred(model));
 
       //Continue clocking the system. Should keep working.
       clockUntil(30, controller, model, atleast(MODE_rescue));
@@ -731,25 +554,6 @@ public class SafetyTests {
       clockUntil(30, controller, model, atleast(MODE_rescue));
   }
 
-  /**
-   * Check that the system recognizes when the level sensor is offset by 100.
-   */
-  @Test
-  public void water_offset_oneHundred(){
-      SteamBoilerCharacteristics config = SteamBoilerCharacteristics.DEFAULT;
-      MySteamBoilerController controller = new MySteamBoilerController(config);
-      PhysicalUnits model = new PhysicalUnits.Template(config).construct();
-      model.setMode(PhysicalUnits.Mode.WAITING);
-
-      //Clock system for a given amount of time. Not expecting anything to go wrong during this time.
-      clockForWithout(240, controller, model, atleast(MODE_emergencystop));
-
-      //Break the steam sensor to be out of bounds
-      model.setLevelSensor(new LevelSensorModels.OffsetOneHundred(model));
-
-      //Continue clocking the system. Should keep working.
-      clockUntil(30, controller, model, atleast(MODE_rescue));
-  }
 
   /**
    * Check that the system recognizes when the water sensor has a transmission failure.
@@ -785,10 +589,11 @@ public class SafetyTests {
       //Expect the system to recognize issue quickly
       clockUntil(10, controller, model, atleast(MODE_emergencystop));
   }
-  /*-----------------------------------------------------------------------------------------------------------------------------------*/
 
 
   /*------------------------------------------------------------Pump Tests-------------------------------------------------------------*/
+  
+  
   /**
    * Check that the system recognizes when a pump is stuck open.
    */
@@ -921,10 +726,12 @@ public class SafetyTests {
       //Continue clocking the system. Should keep working.
       clockUntil(30, controller, model, atleast(MODE_emergencystop));
   }
-  /*-----------------------------------------------------------------------------------------------------------------------------------*/
 
 
   /*---------------------------------------------------------Controller Tests----------------------------------------------------------*/
+  
+  
+  
   /**
    * Check that the system recognizes when a pump controller's transmission fails.
    */
